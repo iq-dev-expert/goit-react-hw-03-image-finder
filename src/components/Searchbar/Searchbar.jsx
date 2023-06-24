@@ -1,4 +1,11 @@
 import { Component } from 'react';
+import {
+  SearchbarStyle,
+  SearchForm,
+  SearchFormButton,
+  SearchFormInput,
+} from './Searchbar.styled';
+import { PiMagnifyingGlassBold } from 'react-icons/pi';
 
 export class Searchbar extends Component {
   state = {
@@ -23,14 +30,15 @@ export class Searchbar extends Component {
 
   render() {
     return (
-      <header className="searchbar">
-        <form className="form" onSubmit={this.onFormSubmit}>
-          <button type="submit" className="button">
-            <span className="button-label">Search</span>
-          </button>
+      <SearchbarStyle>
+        <SearchForm onSubmit={this.onFormSubmit}>
+          <SearchFormButton type="submit">
+            <span>
+              <PiMagnifyingGlassBold />
+            </span>
+          </SearchFormButton>
 
-          <input
-            className="input"
+          <SearchFormInput
             type="text"
             autoComplete="off"
             autoFocus
@@ -38,8 +46,8 @@ export class Searchbar extends Component {
             value={this.state.inputValue}
             onChange={this.onInputChange}
           />
-        </form>
-      </header>
+        </SearchForm>
+      </SearchbarStyle>
     );
   }
 }

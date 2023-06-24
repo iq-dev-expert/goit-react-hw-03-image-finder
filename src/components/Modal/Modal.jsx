@@ -1,9 +1,17 @@
-export function Modal() {
+import { Overlay, ModalStyle } from './Modal.styled';
+
+export function Modal({ closeModal, largeImg, tagImg }) {
   return (
-    <div className="overlay">
-      <div className="modal">
-        <img src="" alt="" />
-      </div>
-    </div>
+    <Overlay
+      onClick={e => {
+        if (e.target === e.currentTarget) {
+          closeModal();
+        }
+      }}
+    >
+      <ModalStyle className="modal">
+        <img src={largeImg} alt={tagImg} />
+      </ModalStyle>
+    </Overlay>
   );
 }
