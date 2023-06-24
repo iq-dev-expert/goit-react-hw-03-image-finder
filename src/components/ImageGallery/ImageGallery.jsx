@@ -1,36 +1,18 @@
-// import axios from 'axios';
-import { Component } from 'react';
-import { fetch } from 'utils/js/fetch';
+import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 
-export class ImageGallery extends Component {
-  state = {
-    data: null,
-  };
-
-  async componentDidUpdate(prevProps, _) {
-    if (prevProps.imageKeyword !== this.props.imageKeyword) {
-      const KEY_WORD = this.props.imageKeyword;
-
-      const response = await fetch(KEY_WORD);
-
-      this.setState({ data: response });
-    }
-  }
-
-  render() {
-    return (
-      <>
-        {this.state.data &&
-          this.state.data.map(item => {
-            return (
-              <img
-                src={item.webformatURL}
-                alt={this.props.imageKeyword}
-                key={item.id}
-              />
-            );
-          })}
-      </>
-    );
-  }
+export function ImageGallery({ dataList }) {
+  console.log(dataList);
+  return (
+    <ul className="gallery">
+      {dataList.map(dataItem => {
+        return (
+          <ImageGalleryItem
+            smallImg={dataItem.webformatURL}
+            tagImg={dataItem.tags}
+            key={dataItem.id}
+          />
+        );
+      })}
+    </ul>
+  );
 }
