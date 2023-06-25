@@ -31,7 +31,7 @@ export class Searchbar extends Component {
     if (inputValue.trim() === '') {
       Report.info(
         'The search field cannot be empty',
-        'Enter a search query',
+        'Enter search query',
         'OK',
         reportInfoOptions
       );

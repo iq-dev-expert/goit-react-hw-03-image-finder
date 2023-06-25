@@ -5,6 +5,14 @@ import { Button } from 'components/Button/Button';
 import { Loader } from 'components/Loader/Loader';
 import { Fetch } from 'utils/js/fetch';
 import { AppStyle } from './App.styled';
+import { Report } from 'notiflix/build/notiflix-report-aio';
+
+const reportInfoOptions = {
+  backOverlayClickToClose: true,
+  messageFontSize: '16px',
+  titleMaxLength: 50,
+  width: '420px',
+};
 
 export class App extends Component {
   state = {
@@ -23,6 +31,16 @@ export class App extends Component {
       this.setState({ loading: true });
       const response = await Fetch(KEY_WORD, page);
       this.setState({ loading: false });
+
+      if (response.length === 0) {
+        Report.failure(
+          `Search query by data: ${imageKeyword} not found!`,
+          'Enter another search query',
+          'OK',
+          reportInfoOptions
+        );
+        return;
+      }
 
       !dataList
         ? this.setState({ dataList: response })
