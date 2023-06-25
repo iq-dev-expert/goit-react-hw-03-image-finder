@@ -1,4 +1,5 @@
 import { Overlay, ModalStyle } from './Modal.styled';
+import PropTypes from 'prop-types';
 
 export function Modal({ closeModal, largeImg, tagImg }) {
   return (
@@ -9,9 +10,15 @@ export function Modal({ closeModal, largeImg, tagImg }) {
         }
       }}
     >
-      <ModalStyle className="modal">
+      <ModalStyle>
         <img src={largeImg} alt={tagImg} />
       </ModalStyle>
     </Overlay>
   );
 }
+
+Modal.propTypes = {
+  closeModal: PropTypes.func.isRequired,
+  largeImg: PropTypes.string.isRequired,
+  tagImg: PropTypes.string.isRequired,
+};

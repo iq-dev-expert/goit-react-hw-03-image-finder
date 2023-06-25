@@ -6,6 +6,13 @@ import {
   SearchFormInput,
 } from './Searchbar.styled';
 import { PiMagnifyingGlassBold } from 'react-icons/pi';
+import { Report } from 'notiflix/build/notiflix-report-aio';
+import PropTypes from 'prop-types';
+
+const reportInfoOptions = {
+  backOverlayClickToClose: true,
+  messageFontSize: '16px',
+};
 
 export class Searchbar extends Component {
   state = {
@@ -17,18 +24,27 @@ export class Searchbar extends Component {
   };
 
   onFormSubmit = e => {
+    const { inputValue } = this.state;
+
     e.preventDefault();
 
-    if (this.state.inputValue.trim() === '') {
-      alert('Enter a search query');
+    if (inputValue.trim() === '') {
+      Report.info(
+        'The search field cannot be empty',
+        'Enter a search query',
+        'OK',
+        reportInfoOptions
+      );
       return;
     }
 
-    this.props.onSubmit(this.state.inputValue);
+    this.props.onSubmit(inputValue);
     this.setState({ inputValue: '' });
   };
 
   render() {
+    const { inputValue } = this.state;
+
     return (
       <SearchbarStyle>
         <SearchForm onSubmit={this.onFormSubmit}>
@@ -43,7 +59,7 @@ export class Searchbar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            value={this.state.inputValue}
+            value={inputValue}
             onChange={this.onInputChange}
           />
         </SearchForm>
@@ -51,3 +67,5 @@ export class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = { onSubmit: PropTypes.func.isRequired };

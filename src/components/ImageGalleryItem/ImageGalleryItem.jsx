@@ -4,6 +4,7 @@ import {
   ImageGalleryItemStyle,
   ImageGalleryItemImage,
 } from './ImageGalleryItem.styled';
+import PropTypes from 'prop-types';
 
 export class ImageGalleryItem extends Component {
   state = {
@@ -53,3 +54,5 @@ export class ImageGalleryItem extends Component {
     );
   }
 }
+
+ImageGalleryItem.propTypes = PropTypes.string.isRequired;

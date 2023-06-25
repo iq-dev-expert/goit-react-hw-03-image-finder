@@ -1,4 +1,5 @@
 import { ButtonStyle } from './Button.styled';
+import PropTypes from 'prop-types';
 
 export function Button({ onLoadMoreButtonClick }) {
   return (
@@ -7,3 +8,5 @@ export function Button({ onLoadMoreButtonClick }) {
     </ButtonStyle>
   );
 }
+
+Button.propTypes = { onLoadMoreButtonClick: PropTypes.func.isRequired };

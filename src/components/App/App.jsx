@@ -15,17 +15,16 @@ export class App extends Component {
   };
 
   async componentDidUpdate(_, prevState) {
-    if (
-      prevState.imageKeyword !== this.state.imageKeyword ||
-      prevState.page !== this.state.page
-    ) {
-      const KEY_WORD = this.state.imageKeyword;
+    const { imageKeyword, page, dataList } = this.state;
+
+    if (prevState.imageKeyword !== imageKeyword || prevState.page !== page) {
+      const KEY_WORD = imageKeyword;
 
       this.setState({ loading: true });
-      const response = await Fetch(KEY_WORD, this.state.page);
+      const response = await Fetch(KEY_WORD, page);
       this.setState({ loading: false });
 
-      !this.state.dataList
+      !dataList
         ? this.setState({ dataList: response })
         : this.setState(({ dataList }) => {
             return {
@@ -44,12 +43,14 @@ export class App extends Component {
   };
 
   render() {
+    const { loading, dataList } = this.state;
+
     return (
       <AppStyle>
         <Searchbar onSubmit={this.onSubmit} />
-        <Loader isLoading={this.state.loading} />
-        {this.state.dataList && <ImageGallery dataList={this.state.dataList} />}
-        {this.state.dataList && (
+        <Loader isLoading={loading} />
+        {dataList && <ImageGallery dataList={dataList} />}
+        {dataList && (
           <Button onLoadMoreButtonClick={this.onLoadMoreButtonClick} />
         )}
       </AppStyle>
