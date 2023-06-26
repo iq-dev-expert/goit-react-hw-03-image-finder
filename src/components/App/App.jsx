@@ -18,42 +18,52 @@ export class App extends Component {
   state = {
     imageKeyword: '',
     page: 1,
-    dataList: null,
+    dataList: [],
     loading: false,
+    totalImages: 0,
   };
 
   async componentDidUpdate(_, prevState) {
-    const { imageKeyword, page, dataList } = this.state;
+    const { imageKeyword, page } = this.state;
 
     if (prevState.imageKeyword !== imageKeyword || prevState.page !== page) {
       const KEY_WORD = imageKeyword;
-
       this.setState({ loading: true });
-      const response = await Fetch(KEY_WORD, page);
-      this.setState({ loading: false });
 
-      if (response.length === 0) {
+      try {
+        const { totalImages, images } = await Fetch(KEY_WORD, page);
+
+        if (totalImages === 0) {
+          Report.failure(
+            `Search query by data: ${imageKeyword} not found!`,
+            'Enter another search query',
+            'OK',
+            reportInfoOptions
+          );
+          return;
+        }
+
+        this.setState(({ dataList }) => {
+          return {
+            dataList: [...dataList, ...images],
+            totalImages,
+          };
+        });
+      } catch (error) {
         Report.failure(
           `Search query by data: ${imageKeyword} not found!`,
           'Enter another search query',
           'OK',
           reportInfoOptions
         );
-        return;
+      } finally {
+        this.setState({ loading: false });
       }
-
-      !dataList
-        ? this.setState({ dataList: response })
-        : this.setState(({ dataList }) => {
-            return {
-              dataList: [...dataList, ...response],
-            };
-          });
     }
   }
 
   onSubmit = imageKeyword => {
-    this.setState({ imageKeyword, page: 1, dataList: null });
+    this.setState({ imageKeyword, page: 1, dataList: [], totalImages: 0 });
   };
 
   onLoadMoreButtonClick = () => {
@@ -61,14 +71,16 @@ export class App extends Component {
   };
 
   render() {
-    const { loading, dataList } = this.state;
+    const { loading, dataList, totalImages } = this.state;
+
+    const showButton = !loading && dataList.length !== totalImages;
 
     return (
       <AppStyle>
         <Searchbar onSubmit={this.onSubmit} />
         <Loader isLoading={loading} />
         {dataList && <ImageGallery dataList={dataList} />}
-        {dataList && (
+        {showButton && (
           <Button onLoadMoreButtonClick={this.onLoadMoreButtonClick} />
         )}
       </AppStyle>
